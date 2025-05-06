@@ -1,5 +1,3 @@
-# Welcome to your Lovable project
-
 ## Project info
 
 Follow these steps to get started:

@@ -130,3 +130,11 @@
     @apply border-men-light;
   }
 }
+
+input::placeholder { color: red; } /* Standard */
+input::-webkit-input-placeholder { color: red; } /* Chrome, Safari */
+input:-moz-placeholder { color: red; } /* Firefox 4-18 */
+input::-moz-placeholder { color: red; } /* Firefox 19+ */
+input:-ms-input-placeholder { color: red; } /* Internet Explorer */
+
+

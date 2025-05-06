@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useVoteStore } from '@/lib/voteStore';
 import VoteButton from '@/components/VoteButton';
@@ -8,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { VoteOption } from '@/lib/types';
 import { Share } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { Progress } from '@/components/ui/progress';
 
 const Index = () => {
   const { hasVoted, userVote, castVote, getVoteStats } = useVoteStore();
@@ -65,7 +65,7 @@ const Index = () => {
       
       <div className="vote-container">
         {/* Gorilla Side */}
-        <div className="w-full md:w-1/2 gorilla-side p-6 md:p-10 flex flex-col items-center">
+        <div className="w-full md:w-1/2 gorilla-side p-6 md:p-10 flex flex-col items-center overflow-y-auto">
           <div className="flex flex-col items-center justify-center flex-grow">
             <h2 className="text-2xl md:text-3xl font-bold mb-8">Team Gorilla</h2>
             
@@ -86,10 +86,19 @@ const Index = () => {
               <CommentSection voteOption="gorilla" />
             </div>
           )}
+          {(hasVoted && userVote != 'gorilla') && (
+            <div className="w-full mt-8">
+              <div className="flex justify-between mb-1">
+              <span className="font-medium">🦍 Gorilla</span>
+              <span className="font-semibold">{stats.gorillaPercentage}% ({stats.gorilla} votes)</span>
+            </div>
+            <Progress value={stats.gorillaPercentage} className="h-3 mb-3 bg-gray-300" indicatorClassName="bg-gorilla" />
+            </div>
+          )}
         </div>
         
         {/* Men Side */}
-        <div className="w-full md:w-1/2 men-side p-6 md:p-10 flex flex-col items-center">
+        <div className="w-full md:w-1/2 men-side p-6 md:p-10 flex flex-col items-center overflow-y-auto">
           <div className="flex flex-col items-center justify-center flex-grow">
             <h2 className="text-2xl md:text-3xl font-bold mb-8">Team 100 Men</h2>
             
@@ -108,54 +117,6 @@ const Index = () => {
           {hasVoted && userVote === 'men' && (
             <div className="w-full mt-8">
               <CommentSection voteOption="men" />
-            </div>
-          )}
-        </div>
-      </div>
-      
-      {/* Results Section */}
-      <div className="bg-gray-900 text-white p-6 md:p-10">
-        <div className="container mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Live Results</h2>
-          
-          <div className="md:w-3/4 lg:w-2/3 mx-auto mb-10">
-            <VoteResults stats={stats} />
-          </div>
-          
-          {/* Only show all comments tab if user has voted */}
-          {hasVoted && (
-            <div className="mt-10">
-              <div className="flex justify-center mb-6">
-                <div className="bg-gray-800 inline-flex p-1 rounded-lg">
-                  <Button
-                    variant={activeTab === 'all' ? 'default' : 'ghost'}
-                    className="text-sm"
-                    onClick={() => setActiveTab('all')}
-                  >
-                    All Comments
-                  </Button>
-                  
-                  <Button
-                    variant={activeTab === 'gorilla' ? 'default' : 'ghost'}
-                    className="text-sm"
-                    onClick={() => setActiveTab('gorilla')}
-                  >
-                    🦍 Team Gorilla
-                  </Button>
-                  
-                  <Button
-                    variant={activeTab === 'men' ? 'default' : 'ghost'}
-                    className="text-sm"
-                    onClick={() => setActiveTab('men')}
-                  >
-                    🧍 Team Men
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="md:w-3/4 lg:w-2/3 mx-auto">
-                <CommentSection voteOption={activeTab} />
-              </div>
             </div>
           )}
         </div>
